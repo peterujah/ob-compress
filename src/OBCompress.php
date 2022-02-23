@@ -144,11 +144,11 @@ namespace Peterujah\NanoBlock;
 		return preg_replace(
 			$this->$options["find"], 
 			$this->$options["replace"], 
-		str_replace(
-			$this->$options["line"],
-			'',
-			$buffer
-		)
+			str_replace(
+				$this->$options["line"],
+				'',
+				$buffer
+			)
 		);
 	}
 }
