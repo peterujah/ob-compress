@@ -8,95 +8,96 @@
 namespace Peterujah\NanoBlock;
 
  class OBCompress{
-  const JSON = "JSON";
-  const TEXT = "TEXT";
-  const HTML = "HTML";
-  private $encoding;
-  private $outputEncoding;
-  private $contentType;
-  private $gzip;
-  private $offset;
-  private $options = array(
-      "find" => array(
-        '/\>[^\S ]+/s',     // strip whitespaces after tags, except space
-        '/[^\S ]+\</s',     // strip whitespaces before tags, except space
-        '/(\s)+/s',         // shorten multiple whitespace sequences
-        '/<!--(.*)-->/Uis',  // Remove HTML comments 
-        // '/<!--(.|\s)*?-->/',  // Remove HTML comments before
-        '/[[:blank:]]+/'
-      ),
-      "replace" => array(
-         '>',
-        '<',
-        '\\1',
-         '',
-         ' '
-      ),
-      "line" => array(
-        "\n",
-        "\r",
-        "\t"
-      )
-   );
+	const JSON = "JSON";
+	const TEXT = "TEXT";
+	const HTML = "HTML";
+	private $encoding;
+	private $outputEncoding;
+	private $contentType;
+	private $gzip;
+	private $offset;
+	private $options = array(
+		"find" => array(
+			'/\>[^\S ]+/s',     // strip whitespaces after tags, except space
+			'/[^\S ]+\</s',     // strip whitespaces before tags, except space
+			'/(\s)+/s',         // shorten multiple whitespace sequences
+			'/<!--(.*)-->/Uis',  // Remove HTML comments 
+			// '/<!--(.|\s)*?-->/',  // Remove HTML comments before
+			'/[[:blank:]]+/'
+		),
+		"replace" => array(
+			 '>',
+			'<',
+			'\\1',
+			 '',
+			 ' '
+		),
+		"line" => array(
+			"\n",
+			"\r",
+			"\t"
+		)
+	);
    
 	public function __construct() {
-	  $this->serverEncoding($_SERVER['HTTP_ACCEPT_ENCODING']);
-    $this->outputEncoding("charset=utf-8");
-    $this->useGzip(true);
-    $this->setExpires(60 * 60 * 30);
-    $this->setContentType("");
+		$this->serverEncoding($_SERVER['HTTP_ACCEPT_ENCODING']);
+		$this->outputEncoding("charset=utf-8");
+		$this->useGzip(true);
+		$this->setExpires(60 * 60 * 30);
+		$this->setContentType("");
 	}
    
-  public function useGzip($gz){
-      $this->gzip = $gz;
-      return $this;
-  }
-   
-  public function setExpires($off){
-      $this->offset = $off;
-      return $this;
-  }
-   
-  public function serverEncoding($enc){
-      $this->encoding = $enc;
-      return $this;
-  }
-  
-  public function outputEncoding($enc){
-      $this->outputEncoding = $enc;
-      return $this;
-  }
-   
-  public function setContentType($ctype){
-      $this->contentType = $ctype;
-      return $this;
-  }
+	  public function useGzip($gz){
+	      $this->gzip = $gz;
+	      return $this;
+	  }
 
-	public function compress( $data, $type ) {
-    $content = ($type == self::JSON ? json_encode($data, true) : $data);
+	  public function setExpires($off){
+	      $this->offset = $off;
+	      return $this;
+	  }
+
+	  public function serverEncoding($enc){
+	      $this->encoding = $enc;
+	      return $this;
+	  }
+  
+	  public function outputEncoding($enc){
+	      $this->outputEncoding = $enc;
+	      return $this;
+	  }
+
+	  public function setContentType($ctype){
+	      $this->contentType = $ctype;
+	      return $this;
+	  }
+
+	 public function compress( $data, $type ) {
+		$content = ($type == self::JSON ? json_encode($data, true) : $data);
 		if ( $this->gzip && strpos($this->encoding, 'gzip' ) !== false ) {
-      header( 'Content-Encoding: gzip');
+			header( 'Content-Encoding: gzip');
 			$content = gzencode( trim( preg_replace( '/\s+/', ' ', $content ) ), 9);
 		} else {
-      header( "Content-Encoding: none\r\n");
-    }
-    if(!empty(($type)){
-      if($type == self::JSON){
-        header( "Content-Type: application/json; {$this->outputEncoding}");
-      }else if($type == self::TEXT){
-        header( "Content-Type: text/plain; {$this->outputEncoding}");
-      }else if($type == self::HTML){
-        header( "Content-Type: text/html; {$this->outputEncoding}");
-      }else{
-        if(!empty($this->contentType)){
-            header( "Content-Type: {$this->contentType}");
-        }
-      }
-    }else{
-       if(!empty($this->contentType)){
-          header( "Content-Type: {$this->contentType}");
-       }
-    }
+			header( "Content-Encoding: none\r\n");
+		}
+		 
+		if(!empty(($type)){
+			if($type == self::JSON){
+				header( "Content-Type: application/json; {$this->outputEncoding}");
+			}else if($type == self::TEXT){
+				header( "Content-Type: text/plain; {$this->outputEncoding}");
+			}else if($type == self::HTML){
+				header( "Content-Type: text/html; {$this->outputEncoding}");
+			}else{
+				if(!empty($this->contentType)){
+				    header( "Content-Type: {$this->contentType}");
+				}
+			}
+		}else{
+			if(!empty($this->contentType)){
+			  header( "Content-Type: {$this->contentType}");
+			}
+		}
 		header( "Cache-Control: must-revalidate");
 		header( "expires: " . gmdate("D, d M Y H:i:s", time() + $this->offset) . " GMT" );
 		header( 'Content-Length: ' . strlen( $content ) );
@@ -124,30 +125,30 @@ namespace Peterujah\NanoBlock;
 	}
 	
 	public function html($body){
-    $this->with($body, 200, self::HTML);
-  }
-   
-  public function text($body){
-    $this->with($body, 200, self::TEXT);
-  }
-   
-  public function json($body){
-    $this->with($body, 200, self::JSON);
-  }
-   
-  public function run($body, $type = self::HTML){
-    $this->with($body, 200, $type);
-  }
-   
-  public static function OBStrip($buffer){
-    return preg_replace(
-      $this->$options["find"], 
-      $this->$options["replace"], 
-      str_replace(
-        $this->$options["line"],
-        '',
-        $buffer
-      )
-    );
-  }
+	    $this->with($body, 200, self::HTML);
+	}
+
+	public function text($body){
+		$this->with($body, 200, self::TEXT);
+	}
+
+	public function json($body){
+		$this->with($body, 200, self::JSON);
+	}
+
+	public function run($body, $type = self::HTML){
+		$this->with($body, 200, $type);
+	}
+
+	public static function OBStrip($buffer){
+		return preg_replace(
+			$this->$options["find"], 
+			$this->$options["replace"], 
+		str_replace(
+			$this->$options["line"],
+			'',
+			$buffer
+		)
+		);
+	}
 }
