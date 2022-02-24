@@ -38,7 +38,7 @@ namespace Peterujah\NanoBlock;
 			"\t"
 		)
 	);
-   
+
 	public function __construct() {
 		$this->serverEncoding($_SERVER['HTTP_ACCEPT_ENCODING']);
 		$this->outputEncoding("charset=utf-8");
@@ -46,31 +46,35 @@ namespace Peterujah\NanoBlock;
 		$this->setExpires(60 * 60 * 30);
 		$this->setContentType("");
 	}
-   
-	  public function useGzip($gz){
-	      $this->gzip = $gz;
-	      return $this;
-	  }
 
-	  public function setExpires($off){
-	      $this->offset = $off;
-	      return $this;
-	  }
+	 /**
+	 * set use gzip
+	 * @param gz bool
+	 */
+	public function useGzip($gz){
+		$this->gzip = $gz;
+		return $this;
+	}
 
-	  public function serverEncoding($enc){
-	      $this->encoding = $enc;
-	      return $this;
-	  }
-  
-	  public function outputEncoding($enc){
-	      $this->outputEncoding = $enc;
-	      return $this;
-	  }
+	public function setExpires($off){
+		$this->offset = $off;
+		return $this;
+	}
 
-	  public function setContentType($ctype){
-	      $this->contentType = $ctype;
-	      return $this;
-	  }
+	public function serverEncoding($enc){
+		$this->encoding = $enc;
+		return $this;
+	}
+
+	public function outputEncoding($enc){
+		$this->outputEncoding = $enc;
+		return $this;
+	}
+
+	public function setContentType($ctype){
+		$this->contentType = $ctype;
+		return $this;
+	}
 
 	 public function compress( $data, $type ) {
 		$content = ($type == self::JSON ? json_encode($data, true) : $data);
