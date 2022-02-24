@@ -122,6 +122,9 @@ namespace Peterujah\NanoBlock;
 		if(!empty($code)){
 			http_response_code($code);
 		}
+		ob_end_flush();
+		//ob_flush();
+		//flush();
 	}
 	
 	public function html($body){
