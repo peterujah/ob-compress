@@ -7,7 +7,7 @@
         "gzip",
         "compress ob",
         "output buffer",
-        "optimize page",
+        "optimize page"
     ],
     "license": "MIT",
     "authors": [
