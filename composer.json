@@ -1,0 +1,35 @@
+{
+    "name": "peterujah/ob-compress",
+    "type": "library",
+    "description": "Php class to compress output buffer in gzip.",
+    "keywords": [
+        "library",
+        "gzip",
+        "compress ob",
+        "output buffer",
+        "optimize page",
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ujah Chigozie",
+            "email": "ujahchigozie@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0 || ^8.0"
+    },
+    "require-dev": {
+        "peterujah/ob-compress": "^1.0"
+    },
+     "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": { 
+            "Peterujah\\NanoBlock\\": "src/" 
+        }
+    }
+}
