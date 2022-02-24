@@ -1,6 +1,13 @@
 # ob-compress
 Php compress Output Buffer In Gzip
 
+## Installation
+
+Installation is super-easy via Composer:
+```md
+composer require peterujah/ob-compress
+```
+
 
 ```php 
 <?php 
