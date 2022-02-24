@@ -146,6 +146,14 @@ namespace Peterujah\NanoBlock;
 	public function run($body, $type = self::HTML){
 		$this->with($body, 200, $type);
 	}
+		   
+       public static function start(){
+       	 ob_start('self::OBStrip');
+       }
+		   
+       public static function end(){
+       	 $this->html(ob_get_contents());
+       }
 
 	public static function OBStrip($buffer){
 		return preg_replace(
