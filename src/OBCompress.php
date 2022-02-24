@@ -151,8 +151,8 @@ namespace Peterujah\NanoBlock;
        	 ob_start('self::OBStrip');
        }
 		   
-       public static function end(){
-       	 $this->html(ob_get_contents());
+       public static function end($type = self::HTML){
+       	 $this->run(ob_get_contents(), $type);
        }
 
 	public static function OBStrip($buffer){
