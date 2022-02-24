@@ -104,7 +104,7 @@ namespace Peterujah\NanoBlock;
 		}
 		header( "Cache-Control: must-revalidate");
 		header( "expires: " . gmdate("D, d M Y H:i:s", time() + $this->offset) . " GMT" );
-		header( 'Content-Length: ' . strlen( $content ) );
+		header( 'Content-Length: ' . ($content != null ? strlen( $content ) : 0) );
 		header( 'Content-Language: en');
 		header( 'X-Content-Type-Options: nosniff');
 		header( 'X-Frame-Options: deny');
