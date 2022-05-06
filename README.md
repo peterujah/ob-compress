@@ -16,7 +16,7 @@ composer require peterujah/ob-compress
 ```php 
 <?php 
 $ob = new Peterujah\NanoBlock\OBCompress();
-ob_start('$ob::OBStrip');
+ob_start('$ob::ob_strip');
 ?>
 <!DOCTYPE html>
 <html lang="en">
