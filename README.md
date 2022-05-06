@@ -40,3 +40,35 @@ $response = array(
 );
 (new OBCompress())->json($response);
 ```
+
+Available Response methods
+```php 
+$compress->json($data);
+``
+```php 
+$compress->text($data);
+``
+
+```php 
+$compress->html($data);
+``
+
+```php 
+$compress->run($data, $contentType);
+``
+
+```php 
+$compress->start();
+``
+
+```php 
+$compress->end($contentType);
+``
+
+```php 
+$compress->with($data, $statusCode, $contentType);
+``
+
+```php 
+$compress::ob_strip($content);
+``
