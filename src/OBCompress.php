@@ -39,7 +39,7 @@ namespace Peterujah\NanoBlock;
 	private $outputEncoding;
 	 
 	/** 
-	* holds expected ouput content type
+	* holds expected output content type
 	* @var string $$contentType
 	*/
 	private $contentType;
@@ -116,7 +116,7 @@ namespace Peterujah\NanoBlock;
 	}
 
 	 /**
-	 * Sets the defult server content encoding type
+	 * Sets the default server content encoding type
 	 * @param string $enc header content encoding
 	 * @return OBCompress $this the class instance
 	 */
@@ -225,7 +225,7 @@ namespace Peterujah\NanoBlock;
 	 /**
 	 * Output output based on passed content type in second parameter 
 	 * @param string|html|array|text|json $body content body
-	 * @param string $type the expected content type to ouput
+	 * @param string $type the expected content type to output
 	 */
 	public function run($body, $type = self::HTML){
 		$this->with($body, 200, $type);
@@ -235,25 +235,25 @@ namespace Peterujah\NanoBlock;
 	 * Starts output buffing and stript unwanted tags in document
 	 */
 	public static function start(){
-	 	ob_start('self::OBStrip');
+	 	ob_start('self::ob_strip');
 	}
 	
 	 /**
 	 * Ends output buffering 
-	 * @param string $type expected content ouput type
+	 * @param string $type expected content output type
 	 */
 	public static function end($type = self::HTML){
 	 	$this->run(ob_get_contents(), $type);
 	}
 
-	 /**
+    /**
 	 * Strips unwanted tags in document page
 	 * Such as comment and newlines
 	 * @param string|html|array|text|json $buffer content output buffer
 	 * @returns html|text preg_replace
 	 */
-	public static function OBStrip($buffer){
-		return preg_replace(
+    public static function ob_strip($buffer){
+        return preg_replace(
 			$this->$options["find"], 
 			$this->$options["replace"], 
 			str_replace(
@@ -262,5 +262,16 @@ namespace Peterujah\NanoBlock;
 				$buffer
 			)
 		);
+    }
+
+     /**
+     * @depreciated
+	 * Strips unwanted tags in document page
+	 * Such as comment and newlines
+	 * @param string|html|array|text|json $buffer content output buffer
+	 * @returns html|text preg_replace
+	 */
+	public static function OBStrip($buffer){
+		return self::ob_strip($buffer);
 	}
 }
