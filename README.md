@@ -12,6 +12,7 @@ Installation is super-easy via Composer:
 composer require peterujah/ob-compress
 ```
 
+To compress webpage output, see the below example code
 
 ```php 
 <?php 
@@ -28,4 +29,14 @@ ob_start('OBCompress::ob_strip');
   </body>
 </html>
 <?php (new OBCompress())->html(ob_get_contents());
+```
+
+To retrieve data from server it can be done like below
+```php
+use Peterujah\NanoBlock\OBCompress;
+$response = array(
+  "foo" => "Foo",
+  "bar" => "Bar"
+);
+(new OBCompress())->json($response);
 ```
