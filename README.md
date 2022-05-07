@@ -43,34 +43,35 @@ $response = array(
 
 Available Response methods
 
+Short Hand to compress data and return as json
 ```php 
 $compress->json($data);
 ```
-
+Short Hand to compress data and return as plain text
 ```php 
 $compress->text($data);
 ```
-
+Short Hand to compress data and return as html document
 ```php 
 $compress->html($data);
 ```
-
+Short Hand to compress data and return as specied content type
 ```php 
 $compress->run($data, $contentType);
 ```
-
+Strips and minify a webpage content, start output buffer on webpage, place at the beginning of a webpage
 ```php 
 $compress->start();
 ```
-
+Short Hand to get output buffer of a webpage and compress it then return as spacied data type
 ```php 
 $compress->end($contentType);
 ```
-
+Rrturns compressed output from passed data, sets the status code and data type
 ```php 
 $compress->with($data, $statusCode, $contentType);
 ```
-
+A function to strips and minify a webpage content, this can be passed to `ob_start('OBCompress::ob_strip');`
 ```php 
 $compress::ob_strip($content);
 ```
