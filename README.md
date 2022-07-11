@@ -17,7 +17,7 @@ To compress webpage output, see the below example code
 ```php 
 <?php 
 use Peterujah\NanoBlock\OBCompress;
-ob_start('OBCompress::ob_strip');
+OBCompress::start()
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +28,7 @@ ob_start('OBCompress::ob_strip');
     This will be compress and optimized
   </body>
 </html>
-<?php (new OBCompress())->html(ob_get_contents());
+<?php (new OBCompress())->end();
 ```
 
 To retrieve data from server it can be done like below
@@ -71,7 +71,7 @@ Rrturns compressed output from passed data, sets the status code and data type
 ```php 
 $compress->with($data, $statusCode, $contentType);
 ```
-A function to strips and minify a webpage content, this can be passed to `ob_start('OBCompress::ob_strip');`
+A function to strips and minify a webpage content, this can be passed to `ob_start('OBCompress::minify');`
 ```php 
-$compress::ob_strip($content);
+$compress::minify($content);
 ```
