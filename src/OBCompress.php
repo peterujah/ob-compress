@@ -6,7 +6,6 @@
  * @license     MIT public license
  */
 namespace Peterujah\NanoBlock;
-
  class OBCompress{
 	/**
 	* holds json content type
@@ -230,19 +229,12 @@ namespace Peterujah\NanoBlock;
 		$this->with($body, 200, $type);
 	}
 	
-	 /**
-	 * Starts output buffing and stript unwanted tags in document
-	 */
-	public static function start(){
-	 	ob_start('self::ob_strip');
-	}
-	
-	 /**
+	/**
 	 * Ends output buffering 
 	 * @param string $type expected content output type
-	 */
-	public static function end($type = self::HTML){
-	 	$this->run(ob_get_contents(), $type);
+	*/
+	public function end($type = self::HTML){
+		$this->with(ob_get_contents(), 200, $type);
 	}
 
     /**
@@ -251,7 +243,7 @@ namespace Peterujah\NanoBlock;
 	 * @param string|html|array|text|json $buffer content output buffer
 	 * @returns html|text preg_replace
 	 */
-    public static function ob_strip($buffer){
+    public static function minify($buffer){
         return preg_replace(
 			self::OPTIONS["find"], 
 			self::OPTIONS["replace"], 
@@ -263,14 +255,21 @@ namespace Peterujah\NanoBlock;
 		);
     }
 
-    /**
-     * @depreciated
+	/**
+	 * @depreciated
 	 * Strips unwanted tags in document page
 	 * Such as comment and newlines
 	 * @param string|html|array|text|json $buffer content output buffer
 	 * @returns html|text preg_replace
 	 */
-	public static function OBStrip($buffer){
-		return self::ob_strip($buffer);
-	}
+	public static function ob_strip($buffer){
+		return self::minify($buffer);
+    }
+
+	/**
+	 * Starts output buffing and stript unwanted tags in document
+	 */
+	public static function start(){
+		ob_start('self::minify');
+   }
 }
