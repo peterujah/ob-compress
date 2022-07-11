@@ -12,19 +12,45 @@ namespace Peterujah\NanoBlock;
 	* holds json content type
 	* @var string JSON
 	*/
-	const JSON = "application/json;";
+	public const JSON = "application/json;";
 	 
 	/**
 	* holds text content type
 	* @var string TEXT
 	*/
-	const TEXT = "text/plain;";
+	public const TEXT = "text/plain;";
 	 
 	/**
 	* holds html content type
 	* @var string HTML
 	*/
-	const HTML = "text/html;";
+	public const HTML = "text/html;";
+
+	/** 
+	* holds content strip setting
+	* @var array OPTIONS
+	*/
+	private const OPTIONS = array(
+		"find" => array(
+			'/\>[^\S ]+/s',
+			'/[^\S ]+\</s',
+			'/(\s)+/s',
+			'/<!--(.*)-->/Uis',
+			'/[[:blank:]]+/'
+		),
+		"replace" => array(
+			 '>',
+			'<',
+			'\\1',
+			 '',
+			 ' '
+		),
+		"line" => array(
+			"\n",
+			"\r",
+			"\t"
+		)
+	);
 	 
 	/**
 	* holds default server encoding
@@ -56,32 +82,6 @@ namespace Peterujah\NanoBlock;
 	*/
 	private $offset;
 	
-	/** 
-	* holds content strip setting
-	* @var array $options
-	*/
-	private $options = array(
-		"find" => array(
-			'/\>[^\S ]+/s',     // strip whitespaces after tags, except space
-			'/[^\S ]+\</s',     // strip whitespaces before tags, except space
-			'/(\s)+/s',         // shorten multiple whitespace sequences
-			'/<!--(.*)-->/Uis',  // Remove HTML comments 
-			// '/<!--(.|\s)*?-->/',  // Remove HTML comments before
-			'/[[:blank:]]+/'
-		),
-		"replace" => array(
-			 '>',
-			'<',
-			'\\1',
-			 '',
-			 ' '
-		),
-		"line" => array(
-			"\n",
-			"\r",
-			"\t"
-		)
-	);
 
 	/**
 	* Class constructor
@@ -160,7 +160,6 @@ namespace Peterujah\NanoBlock;
 		} else {
 			header( "Content-Encoding: none\r\n");
 		}
-
 		if(!empty($type)){
 			header( "Content-Type: {$type} {$this->outputEncoding}");
 		}else if(!empty($this->contentType)){
@@ -182,7 +181,7 @@ namespace Peterujah\NanoBlock;
 	 * Starts connection and closes it to the browser but continue processing the operation
 	 * @param string|html|array|text|json $body ob content body
 	 * @param int $code the response status code
-	 * @param string $type the expected content type to ouput
+	 * @param string $type the expected content type to output
 	 */
 	public function with($body, $code, $type){
 		set_time_limit(0);
@@ -254,17 +253,17 @@ namespace Peterujah\NanoBlock;
 	 */
     public static function ob_strip($buffer){
         return preg_replace(
-			$this->$options["find"], 
-			$this->$options["replace"], 
+			self::OPTIONS["find"], 
+			self::OPTIONS["replace"], 
 			str_replace(
-				$this->$options["line"],
+				self::OPTIONS["line"],
 				'',
 				$buffer
 			)
 		);
     }
 
-     /**
+    /**
      * @depreciated
 	 * Strips unwanted tags in document page
 	 * Such as comment and newlines
