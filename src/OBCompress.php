@@ -80,6 +80,12 @@ namespace Peterujah\NanoBlock;
 	* @var string $offset
 	*/
 	private $offset;
+
+	/** 
+	* holds header cache control
+	* @var string $cacheControl
+	*/
+	private $cacheControl;
 	
 
 	/**
@@ -91,6 +97,7 @@ namespace Peterujah\NanoBlock;
 		$this->useGzip(true);
 		$this->setExpires(60 * 60 * 30);
 		$this->setContentType("");
+		$this->setCacheControl("must-revalidate");
 	}
 
 
@@ -144,6 +151,17 @@ namespace Peterujah\NanoBlock;
 		return $this;
 	}
 
+	/**
+	 * Sets the expected output header cache control
+	 * @param string $ctl header cache control type
+	 * @return OBCompress $this the class instance
+	 */
+	public function setCacheControl($ctl){
+		$this->cacheControl = $ctl;
+		return $this;
+	}
+
+
 	 /**
 	 * Compresses the buffer content and added necessary header to optimize the result
 	 * @param string|html|array|text|json $body ob content body
@@ -164,7 +182,7 @@ namespace Peterujah\NanoBlock;
 		}else if(!empty($this->contentType)){
 			header( "Content-Type: {$this->contentType}");
 		}
-		header( "Cache-Control: must-revalidate");
+		header( "Cache-Control: {$this->cacheControl}");
 		header( "expires: " . gmdate("D, d M Y H:i:s", time() + $this->offset) . " GMT" );
 		header( 'Content-Length: ' . ($content != null ? strlen( $content ) : 0) );
 		header( 'Content-Language: en');
