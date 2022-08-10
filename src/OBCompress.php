@@ -96,7 +96,6 @@ namespace Peterujah\NanoBlock;
 		$this->outputEncoding("charset=utf-8");
 		$this->useGzip(true);
 		$this->setExpires(60 * 60 * 30);
-		$this->setContentType("");
 		$this->setCacheControl("must-revalidate");
 	}
 
@@ -171,7 +170,7 @@ namespace Peterujah\NanoBlock;
 
 	 public function compress( $data, $type ) {
 		$content = ($type == self::JSON ? json_encode($data, true) : $data);
-		if ( $this->gzip && strpos($this->encoding, 'gzip' ) !== false ) {
+		if ( $this->gzip && !empty($this->encoding) && strpos($this->encoding, 'gzip' ) !== false ) {
 			header( 'Content-Encoding: gzip');
 			$content = gzencode( trim( preg_replace( '/\s+/', ' ', $content ) ), 9);
 		} else {
@@ -190,6 +189,7 @@ namespace Peterujah\NanoBlock;
 		header( 'X-Frame-Options: deny');
 		header( 'X-XSS-Protection: 1; mode=block');
 		header( 'Vary: Accept-Encoding');
+		header( "Connection: close" );
 		return $content;
 	}
 
@@ -205,7 +205,7 @@ namespace Peterujah\NanoBlock;
 		ignore_user_abort(true);
 		ob_end_clean();
 		echo $this->compress($body, $type);
-		header("Connection: close\r\n");
+		//header("Connection: close");
 		if(!empty($code)){
 			http_response_code($code);
 		}
