@@ -92,7 +92,9 @@ namespace Peterujah\NanoBlock;
 	* Class constructor
 	*/
 	public function __construct() {
-		$this->serverEncoding($_SERVER['HTTP_ACCEPT_ENCODING']);
+		if(isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+			$this->serverEncoding($_SERVER['HTTP_ACCEPT_ENCODING']);
+		}
 		$this->outputEncoding("charset=utf-8");
 		$this->useGzip(true);
 		$this->setExpires(60 * 60 * 30);
