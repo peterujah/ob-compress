@@ -211,7 +211,7 @@ namespace Peterujah\NanoBlock;
 		if(!empty($code)){
 			http_response_code($code);
 		}
-		if (ob_get_length()){
+		if (ob_get_length() > 0){
 			ob_end_flush();
 			//ob_flush();
 			//flush();
